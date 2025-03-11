@@ -1,6 +1,8 @@
-﻿namespace Medics.Core.Entities;
+﻿using Medics.Core.Abstraction;
 
-public class Geolocation
+namespace Medics.Core.Entities;
+
+public class Geolocation : BaseEntity
 {
     public double xCordinate { get; set; }//kenglik
     public double yCordinate { get; set; }//uzunlik

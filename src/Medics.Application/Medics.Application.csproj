@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Medics.Core\Medics.Core.csproj" />
+    <ProjectReference Include="..\Medics.DataAccess\Medics.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
