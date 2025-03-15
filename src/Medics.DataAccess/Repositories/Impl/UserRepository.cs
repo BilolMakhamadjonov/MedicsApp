@@ -1,5 +1,10 @@
-﻿namespace Medics.DataAccess.Repositories.Impl;
+﻿using Medics.Core.Entities;
+using Medics.DataAccess.Data;
 
-public class UserRepository
+namespace Medics.DataAccess.Repositories.Impl;
+
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
+    public UserRepository(AppDbContext context) : base(context) { }
+
 }

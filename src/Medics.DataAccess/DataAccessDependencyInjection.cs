@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Medics.Shared.Services;
+using Medics.Shared.Services.Impl;
 
 namespace Medics.DataAccess;
 
@@ -13,7 +15,6 @@ public static class DataAccessDependencyInjection
 {
     public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDatabase(configuration);
         services.AddIdentity();
         services.AddRepositories();
         return services;
@@ -22,35 +23,23 @@ public static class DataAccessDependencyInjection
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IPharmacyRepository, PharmacyRepository>();
-        services.AddScoped<IAmbulanceRepository, ambulancere>();
-        services.AddScoped<IClassRepository, ClassRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<IPaymentRepository, PaymentRepository>();
-        services.AddScoped<IPricePolyceRepository, PricePolicyRepository>();
-        services.AddScoped<IReviewRepository, ReviewRepository>();
-        services.AddScoped<IReysRepository, ReysRepository>();
-        services.AddScoped<ITicketRepository, TicketRepository>();
+        services.AddScoped<IAmbulanceRepository, AmbulanceRepository>();
+        services.AddScoped<IAppointmentPaymentRepo, AppointmentPaymentRepo>();
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<IChatRepository, ChatRepository>();
+        services.AddScoped<IDoctorCategoryRepository, DoctorCategoryRepository>();
+        services.AddScoped<IDoctorRepository, DoctorRepository>();
+        services.AddScoped<IDoctorDetailsRepository, DoctorDetailsRepository>();
+        services.AddScoped<IDoctorRepository, DoctorRepository>();
+        services.AddScoped<IGeolocationRepository, GeolocationRepository>();
+        services.AddScoped<IPersonalCabinetRepository, PersonalCabinetRepository>();
+        services.AddScoped<IPharmacyDetailsRepository, PharmacyDetailsRepository>();
+        services.AddScoped<IPharmacyPaymentRepository, PharmacyPaymentRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
-        services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
+        services.AddScoped<IClaimService, ClaimService>();
     }
 
-    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
-    {
-        var databaseConfig = configuration.GetSection("Database").Get<DatabaseConfiguration>();
-
-        if (databaseConfig.UseInMemoryDatabase)
-        {
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase("AirwaysDatabase"));
-        }
-        else
-        {
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(databaseConfig.ConnectionString,
-                    npgsqlOptions => npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
-        }
-    }
 
     private static void AddIdentity(this IServiceCollection services)
     {
@@ -75,10 +64,4 @@ public static class DataAccessDependencyInjection
             options.User.RequireUniqueEmail = true;
         });
     }
-}
-
-public class DatabaseConfiguration
-{
-    public bool UseInMemoryDatabase { get; set; }
-    public string ConnectionString { get; set; }
 }

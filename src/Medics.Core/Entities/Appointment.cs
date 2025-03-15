@@ -1,5 +1,4 @@
 ﻿using Medics.Core.Comman;
-using Medics.Core.Comman;
 
 namespace Medics.Core.Entities;
 
@@ -9,7 +8,7 @@ public class Appointment : BaseEntity
     public string Reason { get; set; } // kasalli sababi
     public User User { get; set; }
     public Guid UserId { get; set; }
-    public Doctor Doctor {  get; set; }
+    public Doctor Doctor { get; set; }
     public Guid DoctorId { get; set; }
     public AppointmentPayment Payment { get; set; }
 }

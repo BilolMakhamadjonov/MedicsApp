@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Medics.Core.Entities;
 
-namespace Medics.DataAccess.Repositories
-{
-    internal interface IPharmacyPaymentRepository
-    {
-    }
-}
+namespace Medics.DataAccess.Repositories;
+
+public interface IPharmacyPaymentRepository : IBaseRepository<PharmacyPayment> { }
