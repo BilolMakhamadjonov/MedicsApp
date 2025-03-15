@@ -9,13 +9,13 @@ namespace Medics.DataAccess.Repositories.Impl;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
 {
-    protected readonly AppDbContext _context;
+    protected readonly AppDbContext Context;
     protected readonly DbSet<TEntity> _dbSet;
 
     public BaseRepository(AppDbContext context)
     {
-        _context = context;
-        _dbSet = _context.Set<TEntity>();
+        Context = context;
+        _dbSet = Context.Set<TEntity>();
     }
 
     //                                          (GetAllAsync(x => x.Name.Contains("test")))
@@ -38,21 +38,21 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public async Task<TEntity> AddAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        await Context.SaveChangesAsync();
         return entity;
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         _dbSet.Update(entity);
-        await _context.SaveChangesAsync();
+        await Context.SaveChangesAsync();
         return entity;
     }
 
     public async Task<TEntity> DeleteAsync(TEntity entity)
     {
         var removedEntity = _dbSet.Remove(entity).Entity;
-        await _context.SaveChangesAsync();
+        await Context.SaveChangesAsync();
 
         return removedEntity;
     }
