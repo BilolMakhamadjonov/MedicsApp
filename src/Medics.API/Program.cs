@@ -2,29 +2,22 @@ using Medics.DataAccess.Data;
 using Medics.Shared.Services.Impl;
 using Medics.Shared.Services;
 using Microsoft.EntityFrameworkCore;
+using Medics.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Servislarni ro‘yxatdan o‘tkazamiz
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<IClaimService, ClaimService>(); // yoki boshqa implementatsiya
-builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddInfrastructure(builder.Configuration); // DI chaqirish
 
 var app = builder.Build();
 
-using var scope = app.Services.CreateScope();
-await AutomatedMigration.MigrateAsync(scope.ServiceProvider);
+// Database migratsiyasini bajarish
+await app.Services.MigrateDatabaseAsync();
 
-// Configure the HTTP request pipeline.
+// Middleware konfiguratsiyasi
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -32,9 +25,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
+

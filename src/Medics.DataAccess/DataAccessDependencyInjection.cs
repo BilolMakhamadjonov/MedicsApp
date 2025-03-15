@@ -6,51 +6,49 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Medics.Shared.Services.Impl;
+using Medics.Shared.Services;
 
 namespace Medics.DataAccess;
 
 public static class DataAccessDependencyInjection
 {
-    public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddDatabase(configuration);
-        services.AddIdentity();
-        services.AddRepositories();
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        // Database qo‘shish
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        // Identity qo‘shish
+        services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+        // Custom servislar qo‘shish
+        services.AddScoped<IClaimService, ClaimService>();
+
+        // Authentication va Authorization
+        services.AddAuthentication();
+        services.AddAuthorization();
+
         return services;
     }
 
-    private static void AddRepositories(this IServiceCollection services)
+    public static async Task MigrateDatabaseAsync(this IServiceProvider serviceProvider)
     {
-        services.AddScoped<IPharmacyRepository, PharmacyRepository>();
-        //services.AddScoped<IAmbulanceRepository, ambulancere>();
-        //services.AddScoped<IClassRepository, ClassRepository>();
-        //services.AddScoped<IOrderRepository, OrderRepository>();
-        //services.AddScoped<IPaymentRepository, PaymentRepository>();
-        //services.AddScoped<IPricePolyceRepository, PricePolicyRepository>();
-        //services.AddScoped<IReviewRepository, ReviewRepository>();
-        //services.AddScoped<IReysRepository, ReysRepository>();
-        //services.AddScoped<ITicketRepository, TicketRepository>();
-        //services.AddScoped<IUserRepository, UserRepository>();
-        //services.AddScoped<IPasswordHasher, PasswordHasher>();
-        //services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
+        using var scope = serviceProvider.CreateScope();
+        var services = scope.ServiceProvider;
+
+        var context = services.GetRequiredService<AppDbContext>();
+        await context.Database.MigrateAsync();
+
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await DatabaseContextSeed.SeedDatabaseAsync(context, userManager);
     }
 
-    //private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
-    //{
-    //    var databaseConfig = configuration.GetSection("Database").Get<DatabaseConfiguration>();
-
-    //    if (databaseConfig.UseInMemoryDatabase)
-    //    {
-    //        services.AddDbContext<AppDbContext>(options =>
-    //            options.UseInMemoryDatabase("AirwaysDatabase"));
-    //    }
-    //    else
-    //    {
-    //        services.AddDbContext<AppDbContext>(options =>
-    //            options.UseNpgsql(databaseConfig.ConnectionString,
-    //                npgsqlOptions => npgsqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
-    //    }
-    //}
 
     private static void AddIdentity(this IServiceCollection services)
     {
@@ -75,10 +73,5 @@ public static class DataAccessDependencyInjection
             options.User.RequireUniqueEmail = true;
         });
     }
-}
 
-public class DatabaseConfiguration
-{
-    public bool UseInMemoryDatabase { get; set; }
-    public string ConnectionString { get; set; }
 }
