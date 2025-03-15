@@ -3,21 +3,28 @@ using Medics.Shared.Services.Impl;
 using Medics.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using Medics.DataAccess;
+using Medics.Application.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Servislarni ro‘yxatdan o‘tkazamiz
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddInfrastructure(builder.Configuration); // DI chaqirish
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddDataAccess(builder.Configuration)
+   .AddApplication(builder.Environment);
+
 
 var app = builder.Build();
 
-// Database migratsiyasini bajarish
-await app.Services.MigrateDatabaseAsync();
+using var scope = app.Services.CreateScope();
+await AutomatedMigration.MigrateAsync(scope.ServiceProvider);
 
-// Middleware konfiguratsiyasi
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -25,8 +32,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();
 

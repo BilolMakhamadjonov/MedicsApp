@@ -13,40 +13,31 @@ namespace Medics.DataAccess;
 
 public static class DataAccessDependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-        // Database qo‘shish
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(connectionString));
-
-        // Identity qo‘shish
-        services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
-
-        // Custom servislar qo‘shish
-        services.AddScoped<IClaimService, ClaimService>();
-
-        // Authentication va Authorization
-        services.AddAuthentication();
-        services.AddAuthorization();
-
+        services.AddIdentity();
+        services.AddRepositories();
         return services;
     }
 
-    public static async Task MigrateDatabaseAsync(this IServiceProvider serviceProvider)
+    private static void AddRepositories(this IServiceCollection services)
     {
-        using var scope = serviceProvider.CreateScope();
-        var services = scope.ServiceProvider;
-
-        var context = services.GetRequiredService<AppDbContext>();
-        await context.Database.MigrateAsync();
-
-        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-        await DatabaseContextSeed.SeedDatabaseAsync(context, userManager);
+        services.AddScoped<IPharmacyRepository, PharmacyRepository>();
+        services.AddScoped<IAmbulanceRepository, AmbulanceRepository>();
+        services.AddScoped<IAppointmentPaymentRepo, AppointmentPaymentRepo>();
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<IChatRepository, ChatRepository>();
+        services.AddScoped<IDoctorCategoryRepository, DoctorCategoryRepository>();
+        services.AddScoped<IDoctorRepository, DoctorRepository>();
+        services.AddScoped<IDoctorDetailsRepository, DoctorDetailsRepository>();
+        services.AddScoped<IDoctorRepository, DoctorRepository>();
+        services.AddScoped<IGeolocationRepository, GeolocationRepository>();
+        services.AddScoped<IPersonalCabinetRepository, PersonalCabinetRepository>();
+        services.AddScoped<IPharmacyDetailsRepository,PharmacyDetailsRepository>();
+        services.AddScoped<IPharmacyPaymentRepository, PharmacyPaymentRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IClaimService, ClaimService>();
     }
 
 
@@ -73,5 +64,5 @@ public static class DataAccessDependencyInjection
             options.User.RequireUniqueEmail = true;
         });
     }
-
 }
+

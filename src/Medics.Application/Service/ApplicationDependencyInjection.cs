@@ -1,12 +1,43 @@
-﻿using System;
+﻿using Medics.Shared.Services.Impl;
+using Medics.Shared.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Medics.Application.AutoMapping;
 
 namespace Medics.Application.Service
 {
-    internal class ApplicationDependencyInjection
+    public static class ApplicationDependencyInjection
     {
+        public static IServiceCollection AddApplication(this IServiceCollection services, IWebHostEnvironment env)
+        {
+            services.AddServices(env);
+
+            services.RegisterAutoMapper();
+
+            services.RegisterCashing();
+
+            return services;
+        }
+
+        private static void AddServices(this IServiceCollection services, IWebHostEnvironment env)
+        {
+            services.AddScoped<IClaimService, ClaimService>();
+
+        }
+
+        private static void RegisterAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(IMappingProfilesMarker));
+        }
+
+        private static void RegisterCashing(this IServiceCollection services)
+        {
+            services.AddMemoryCache();
+        }
     }
 }

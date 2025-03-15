@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Medics.DataAccess.Repositories.Impl
 {
-    public class PharmacyDetailsRepository:BaseRepository<Pharmacy>,IPharmacyRepository
+    public class PharmacyDetailsRepository:BaseRepository<PharmacyDetails>,IPharmacyDetailsRepository
     {
         public PharmacyDetailsRepository(AppDbContext appDbContext) : base(appDbContext) { }
     }

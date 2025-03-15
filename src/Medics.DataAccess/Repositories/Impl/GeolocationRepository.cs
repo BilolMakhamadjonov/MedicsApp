@@ -10,6 +10,6 @@ namespace Medics.DataAccess.Repositories.Impl
 {
     public class GeolocationRepository:BaseRepository<Geolocation>,IGeolocationRepository
     {
-        GeolocationRepository(AppDbContext appDbContext) : base(appDbContext) { }
+        public GeolocationRepository(AppDbContext appDbContext) : base(appDbContext) { }
     }
 }
