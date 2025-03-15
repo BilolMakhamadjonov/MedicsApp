@@ -1,4 +1,4 @@
-﻿namespace Medics.Core.Abstraction;
+﻿namespace Medics.Core.Comman;
 
 public record Error(string code, string message)
 {

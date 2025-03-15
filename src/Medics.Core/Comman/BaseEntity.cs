@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Medics.Core.Abstraction;
+namespace Medics.Core.Comman;
 
 public abstract class BaseEntity
 {

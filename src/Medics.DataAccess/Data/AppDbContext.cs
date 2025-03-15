@@ -18,9 +18,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
+    
 
     public DbSet<Ambulance> Ambulances { get; set; }
     public DbSet<Appointment> Appointments { get; set; }

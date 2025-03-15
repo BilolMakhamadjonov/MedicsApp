@@ -1,4 +1,5 @@
-﻿using Medics.Core.Abstraction;
+﻿using Medics.Core.Comman;
+using Medics.Core.Comman;
 
 namespace Medics.Core.Entities;
 

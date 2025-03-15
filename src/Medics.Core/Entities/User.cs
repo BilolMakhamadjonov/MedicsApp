@@ -1,5 +1,6 @@
-﻿using Medics.Core.Abstraction;
+﻿using Medics.Core.Comman;
 using Medics.Core.Entities.Enum.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Medics.Core.Entities;
 
