@@ -5,5 +5,5 @@ namespace Medics.DataAccess.Repositories.Impl;
 
 public class AppointmentRepository : BaseRepository<Appointment>, IAppointmentRepository
 {
-    public Appointment(AppDbContext context) : base(context) { }
+    public AppointmentRepository(AppDbContext context) : base(context) { }
 }

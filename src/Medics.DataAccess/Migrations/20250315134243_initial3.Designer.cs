@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Medics.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250311142147_init")]
-    partial class init
+    [Migration("20250315134243_initial3")]
+    partial class initial3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

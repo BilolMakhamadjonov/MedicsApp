@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Medics.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class initial3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -335,7 +335,7 @@ namespace Medics.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    BookingDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    BookingDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Reason = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorId = table.Column<Guid>(type: "uuid", nullable: false)
@@ -475,8 +475,8 @@ namespace Medics.DataAccess.Migrations
                     UserName = table.Column<string>(type: "text", nullable: false),
                     AvarageStars = table.Column<string>(type: "text", nullable: false),
                     About = table.Column<string>(type: "text", nullable: false),
-                    StartWorking = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndWorking = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StartWorking = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndWorking = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     ChatId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
