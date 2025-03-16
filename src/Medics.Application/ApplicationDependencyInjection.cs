@@ -1,4 +1,5 @@
-﻿using Medics.Shared.Services.Impl;
+﻿using Medics.Application.AutoMapping;
+using Medics.Shared.Services.Impl;
 using Medics.Shared.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,9 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Medics.Application.AutoMapping;
+using Medics.Application.Service;
+using Medics.Application.Service.Impl;
 
-namespace Medics.Application.Service
+namespace Medics.Application
 {
     public static class ApplicationDependencyInjection
     {
@@ -27,6 +29,9 @@ namespace Medics.Application.Service
         private static void AddServices(this IServiceCollection services, IWebHostEnvironment env)
         {
             services.AddScoped<IClaimService, ClaimService>();
+            services.AddScoped<IPharmacyService,PharmacyService>();
+            services.AddScoped<IChatService,ChatService>();
+            services.AddScoped<IDoctorService,DoctorService>();
 
         }
 

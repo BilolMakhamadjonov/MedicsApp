@@ -2,4 +2,7 @@
 
 namespace Medics.DataAccess.Repositories;
 
-public interface IDoctorRepository : IBaseRepository<Doctor> { }
+public interface IDoctorRepository : IBaseRepository<Doctor> 
+{
+    Task<List<Doctor>> GetAllWithIncludesAsync();
+}

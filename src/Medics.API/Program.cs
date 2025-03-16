@@ -1,9 +1,8 @@
-using Medics.DataAccess.Data;
-using Medics.Shared.Services.Impl;
-using Medics.Shared.Services;
-using Microsoft.EntityFrameworkCore;
+using Medics.API.Hubs;
+using Medics.Application;
 using Medics.DataAccess;
-using Medics.Application.Service;
+using Medics.DataAccess.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +18,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDataAccess(builder.Configuration)
    .AddApplication(builder.Environment);
 
-
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
@@ -34,6 +32,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.MapControllers();
 

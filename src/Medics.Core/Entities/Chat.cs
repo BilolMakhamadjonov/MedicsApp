@@ -13,4 +13,5 @@ public class Chat : BaseEntity
     public bool IsReaded { get; set; }
     public VideoCall VideoCall { get; set; }
     public Guid VideoCallId { get; set;}
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

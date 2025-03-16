@@ -17,11 +17,12 @@ public static class DataAccessDependencyInjection
     {
         services.AddIdentity();
         services.AddRepositories();
+        services.AddSignalR();
         return services;
     }
 
     private static void AddRepositories(this IServiceCollection services)
-    {
+    {   
         services.AddScoped<IPharmacyRepository, PharmacyRepository>();
         services.AddScoped<IAmbulanceRepository, AmbulanceRepository>();
         services.AddScoped<IAppointmentPaymentRepo, AppointmentPaymentRepo>();

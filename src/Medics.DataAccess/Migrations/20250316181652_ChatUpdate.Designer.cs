@@ -3,6 +3,7 @@ using System;
 using Medics.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Medics.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250316181652_ChatUpdate")]
+    partial class ChatUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,10 +209,11 @@ namespace Medics.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("AverageStars")
-                        .HasColumnType("double precision");
+                    b.Property<string>("AvarageStars")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<Guid>("DoctorId")
+                    b.Property<Guid>("ChatId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("EndWorking")
@@ -224,8 +228,7 @@ namespace Medics.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId")
-                        .IsUnique();
+                    b.HasIndex("ChatId");
 
                     b.ToTable("DoctorDetails");
                 });
@@ -717,13 +720,13 @@ namespace Medics.DataAccess.Migrations
 
             modelBuilder.Entity("Medics.Core.Entities.DoctorDetails", b =>
                 {
-                    b.HasOne("Medics.Core.Entities.Doctor", "Doctor")
-                        .WithOne("DoctorDetails")
-                        .HasForeignKey("Medics.Core.Entities.DoctorDetails", "DoctorId")
+                    b.HasOne("Medics.Core.Entities.Chat", "Chat")
+                        .WithMany()
+                        .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Doctor");
+                    b.Navigation("Chat");
                 });
 
             modelBuilder.Entity("Medics.Core.Entities.PersonalCabinet", b =>
@@ -845,9 +848,6 @@ namespace Medics.DataAccess.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("Chats");
-
-                    b.Navigation("DoctorDetails")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Medics.Core.Entities.DoctorCategory", b =>
