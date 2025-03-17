@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Medics.Application.AutoMapping;
 
-namespace Medics.Application.Service;
+namespace Medics.Application;
 
 public static class ApplicationDependencyInjection
 {

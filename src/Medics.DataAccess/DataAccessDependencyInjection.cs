@@ -17,6 +17,7 @@ public static class DataAccessDependencyInjection
     {
         services.AddIdentity();
         services.AddRepositories();
+        services.AddDatabaseServices(configuration);
         return services;
     }
 
@@ -38,6 +39,13 @@ public static class DataAccessDependencyInjection
         services.AddScoped<IPharmacyPaymentRepository, PharmacyPaymentRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IClaimService, ClaimService>();
+    }
+
+    public static IServiceCollection AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+        return services;
     }
 
 
