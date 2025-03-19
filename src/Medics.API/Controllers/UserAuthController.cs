@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Medics.Application.Extensions;
 using System.Security.Claims;
 using System.Text;
+using Medics.DataAccess.Auth;
 
 namespace Medics.API.Controllers;
 
@@ -18,12 +19,18 @@ public class AuthController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IConfiguration _configuration;
+    private readonly IJwtTokenHandler _jwtTokenHandler;
 
-    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+
+    public AuthController(UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
+        IConfiguration configuration,
+        IJwtTokenHandler jwtTokenHandler)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
+        _jwtTokenHandler = jwtTokenHandler;
     }
 
     [HttpPost("register")]
@@ -52,16 +59,35 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginModel model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null)
-            return Unauthorized("Invalid email or password");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        try
+        {
 
-        var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-        if (!result.Succeeded)
-            return Unauthorized("Invalid email or password");
 
-        var token = GenerateJwtToken(user);
-        return Ok(new { token });
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return Unauthorized(new { message = "Email yoki parol noto‘g‘ri" });
+
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+            if (!result.Succeeded)
+                return Unauthorized(new { message = "Email yoki parol noto‘g‘ri" });
+
+            var token = _jwtTokenHandler.GenerateAccessToken(user);
+            var refreshToken = _jwtTokenHandler.GenerateRefreshToken();
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                RefreshToken = refreshToken,
+                expiration = token.ValidTo,
+                User = user
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Message = ex.Message });
+        }
     }
 
     private string GenerateJwtToken(ApplicationUser user)

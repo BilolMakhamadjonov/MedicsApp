@@ -1,4 +1,6 @@
-﻿namespace Medics.Application.DtoModels.User;
+﻿using Medics.Core.Entities.Enum.User;
+
+namespace Medics.Application.DtoModels.User;
 
 public class UserLoginModel
 {

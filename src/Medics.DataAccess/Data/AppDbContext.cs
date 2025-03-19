@@ -21,7 +21,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     
 
     public DbSet<Ambulance> Ambulances { get; set; }
-    public DbSet<Appointment> Appointments { get; set; }
+    public DbSet<AppointmentPayment> Appointments { get; set; }
     public DbSet<AppointmentPayment> AppointmentPayments { get; set; }
     public DbSet<Cart> Carts { get; set; }
     public DbSet<Chat> Chats { get; set; }

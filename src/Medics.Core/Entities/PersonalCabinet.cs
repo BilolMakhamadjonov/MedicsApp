@@ -6,7 +6,7 @@ namespace Medics.Core.Entities;
 public class PersonalCabinet : BaseEntity
 {
     public long MySaved { get; set; }
-    public Appointment Appointment { get; set; }
+    public AppointmentPayment Appointment { get; set; }
     public Guid AppointmentId { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public User User { get; set; }
