@@ -6,3 +6,5 @@ public class PharmacyDetailsUpdateDTO
     public string? Description { get; set; }
     public double? TotalPrice { get; set; }
 }
+
+public class UpdatePharmacyDetailsResponseDTO : BaseResponseDTO { }

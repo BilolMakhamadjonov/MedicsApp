@@ -8,3 +8,5 @@ public class UserUpdateDTO
     public float Balance { get; set; } = 0;
     public UserGender Gender { get; set; }
 }
+
+public class UpdateUserResponseDTO : BaseResponseDTO { }

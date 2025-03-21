@@ -31,15 +31,15 @@ public class DoctorService : IDoctorService
         return _mapper.Map<DoctorResponseDTO>(doctor);
     }
 
-    public async Task<DoctorResponseDTO> CreateAsync(DoctorCreateDTO createDoctorModel, CancellationToken cancellationToken = default)
+    public async Task<CreateDoctorResponseDTO> CreateAsync(DoctorCreateDTO createDoctorModel, CancellationToken cancellationToken = default)
     {
         var doctor = _mapper.Map<Doctor>(createDoctorModel);
         await _doctorRepository.AddAsync(doctor);
 
-        return new DoctorResponseDTO { Id = doctor.Id };
+        return new CreateDoctorResponseDTO { Id = doctor.Id };
     }
 
-    public async Task<DoctorResponseDTO> UpdateAsync(Guid id, DoctorUpdateDTO updateDoctorModel, CancellationToken cancellationToken = default)
+    public async Task<UpdateDoctorResponseDTO> UpdateAsync(Guid id, DoctorUpdateDTO updateDoctorModel, CancellationToken cancellationToken = default)
     {
         var doctor = await _doctorRepository.GetByIdAsync(id);
         if (doctor == null) throw new Exception("Doctor not found.");
@@ -47,7 +47,7 @@ public class DoctorService : IDoctorService
         _mapper.Map(updateDoctorModel, doctor);
         await _doctorRepository.UpdateAsync(doctor);
 
-        return new DoctorResponseDTO { Id = doctor.Id };
+        return new UpdateDoctorResponseDTO { Id = doctor.Id };
     }
 
     public async Task<BaseResponseDTO> DeleteAsync(Guid id, CancellationToken cancellationToken = default)

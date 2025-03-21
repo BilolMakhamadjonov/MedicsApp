@@ -9,3 +9,5 @@ public class PersonalCabinetCreateDTO
     public PaymentMethod PaymentMethod { get; set; }
     public Guid UserId { get; set; }
 }
+
+public class CreatePersonalCabinetResponseDTO : BaseResponseDTO { }

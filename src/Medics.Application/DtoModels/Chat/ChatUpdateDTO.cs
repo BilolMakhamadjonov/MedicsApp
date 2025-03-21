@@ -5,3 +5,5 @@ public class ChatUpdateDTO
     public string? Message { get; set; }
     public bool? IsReaded { get; set; }
 }
+
+public class UpdateChatResponseDTO : BaseResponseDTO { }

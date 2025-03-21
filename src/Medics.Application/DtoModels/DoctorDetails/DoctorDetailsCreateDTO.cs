@@ -9,3 +9,6 @@ public class DoctorDetailsCreateDTO
     public DateTime EndWorking { get; set; }
     public Guid ChatId { get; set; }
 }
+
+public class CreateDoctorDetailsResponseDTO : BaseResponseDTO { }
+

@@ -5,3 +5,5 @@ public class AppointmentUpdateDTO
     public DateTime? BookingDate { get; set; }
     public string? Reason { get; set; }
 }
+
+public class UpdateAppointmentResponseDTO : BaseResponseDTO { }

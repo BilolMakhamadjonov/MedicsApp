@@ -78,6 +78,11 @@ public class ApiResult<TValue> : ApiResult
     public static ApiResult<TValue> Create(TValue? value)
         => value != null ? Success(value) : Failure(Error.NullValue);
 
+    public static object? Success(bool v)
+    {
+        throw new NotImplementedException();
+    }
+
     // Implicit conversion operator to allow direct conversion from TValue to ApiResult<TValue>
     public static implicit operator ApiResult<TValue>(TValue? value) => Create(value);
 

@@ -35,6 +35,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<PharmacyPayment> PharmacyPayments { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<VideoCall> VideoCalls { get; set; }
+    public DbSet<OtpCode> OtpCodes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

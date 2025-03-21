@@ -8,3 +8,5 @@ public class DoctorDetailsUpdateDTO
     public DateTime? StartWorking { get; set; }
     public DateTime? EndWorking { get; set; }
 }
+
+public class UpdateDoctorDetailsResponseDTO : BaseResponseDTO { }

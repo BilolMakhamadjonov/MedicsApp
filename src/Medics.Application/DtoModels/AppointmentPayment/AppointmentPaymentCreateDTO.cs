@@ -9,3 +9,5 @@ public class AppointmentPaymentCreateDTO
     public decimal AdminFee { get; set; }
     public Guid AppointmentId { get; set; }
 }
+
+public class CreateAppointmentPaymentResponseDTO : BaseResponseDTO { }

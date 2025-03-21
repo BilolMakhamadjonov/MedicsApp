@@ -68,7 +68,7 @@ namespace Medics.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointment");
                 });
 
             modelBuilder.Entity("Medics.Core.Entities.AppointmentPayment", b =>
@@ -86,18 +86,28 @@ namespace Medics.DataAccess.Migrations
                     b.Property<decimal>("ConsultationPrice")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("DoctorId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("AppointmentPayments");
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AppointmentPayment");
                 });
 
             modelBuilder.Entity("Medics.Core.Entities.Cart", b =>
@@ -244,6 +254,31 @@ namespace Medics.DataAccess.Migrations
                     b.ToTable("Geolocations");
                 });
 
+            modelBuilder.Entity("Medics.Core.Entities.OtpCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiryTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OtpCodes");
+                });
+
             modelBuilder.Entity("Medics.Core.Entities.PersonalCabinet", b =>
                 {
                     b.Property<Guid>("Id")
@@ -356,6 +391,10 @@ namespace Medics.DataAccess.Migrations
                     b.Property<float>("Balance")
                         .HasColumnType("real");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -417,6 +456,10 @@ namespace Medics.DataAccess.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
@@ -439,6 +482,15 @@ namespace Medics.DataAccess.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -620,13 +672,13 @@ namespace Medics.DataAccess.Migrations
             modelBuilder.Entity("Medics.Core.Entities.Appointment", b =>
                 {
                     b.HasOne("Medics.Core.Entities.Doctor", "Doctor")
-                        .WithMany("Appointments")
+                        .WithMany()
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Medics.Core.Entities.User", "User")
-                        .WithMany("Appointments")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -643,6 +695,14 @@ namespace Medics.DataAccess.Migrations
                         .HasForeignKey("Medics.Core.Entities.AppointmentPayment", "AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Medics.Core.Entities.Doctor", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("Medics.Core.Entities.User", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Appointment");
                 });
@@ -725,7 +785,7 @@ namespace Medics.DataAccess.Migrations
 
             modelBuilder.Entity("Medics.Core.Entities.PersonalCabinet", b =>
                 {
-                    b.HasOne("Medics.Core.Entities.Appointment", "Appointment")
+                    b.HasOne("Medics.Core.Entities.AppointmentPayment", "Appointment")
                         .WithMany()
                         .HasForeignKey("AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)

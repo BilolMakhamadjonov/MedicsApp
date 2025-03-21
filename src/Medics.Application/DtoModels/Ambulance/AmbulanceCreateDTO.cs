@@ -5,3 +5,5 @@ public class AmbulanceCreateDTO
     public Guid ClientLocationId { get; set; }
     public Guid AmbulanceLocationId { get; set; }
 }
+
+public class CreateAmbulanceResponseDTO : BaseResponseDTO { }

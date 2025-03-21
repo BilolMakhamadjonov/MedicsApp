@@ -6,3 +6,5 @@ public class CartCreateDTO
     public decimal Total { get; set; }
     public Guid PharmacyPaymentId { get; set; }
 }
+
+public class CreateCartResponseDTO : BaseResponseDTO { }

@@ -29,11 +29,11 @@ public class ChatService : IChatService
         return _mapper.Map<ChatResponseDTO>(chat);
     }
 
-    public async Task<ChatResponseDTO> CreateChatAsync(ChatCreateDTO dto)
+    public async Task<CreateChatResponseDTO> CreateChatAsync(ChatCreateDTO dto)
     {
         var chat = _mapper.Map<Chat>(dto);
         await _repository.AddAsync(chat);
-        return _mapper.Map<ChatResponseDTO>(chat);
+        return _mapper.Map<CreateChatResponseDTO>(chat);
     }
 
     public async Task<bool> DeleteChatAsync(Guid id)

@@ -7,3 +7,5 @@ public class AppointmentCreateDTO
     public Guid UserId { get; set; }
     public Guid DoctorId { get; set; }
 }
+
+public class CreateAppointmentResponseDTO : BaseResponseDTO { }

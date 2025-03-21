@@ -29,21 +29,21 @@ namespace Medics.Application.Service.Impl
             return _mapper.Map<PharmacyResponseDTO>(pharmacy);
         }
 
-        public async Task<PharmacyResponseDTO> CreateAsync(PharmacyCreateDTO model, CancellationToken cancellationToken = default)
+        public async Task<CreatePharmacyResponseDTO> CreateAsync(PharmacyCreateDTO model, CancellationToken cancellationToken = default)
         {
             var pharmacy = _mapper.Map<Pharmacy>(model);
             await _pharmacyRepository.AddAsync(pharmacy);
-            return _mapper.Map<PharmacyResponseDTO>(pharmacy);
+            return _mapper.Map<CreatePharmacyResponseDTO>(pharmacy);
         }
 
-        public async Task<PharmacyResponseDTO> UpdateAsync(Guid id, PharmacyUpdateDTO model, CancellationToken cancellationToken = default)
+        public async Task<UpdatePharmacyResponseDTO> UpdateAsync(Guid id, PharmacyUpdateDTO model, CancellationToken cancellationToken = default)
         {
             var pharmacy = await _pharmacyRepository.GetByIdAsync(id);
             if (pharmacy == null) throw new Exception("Pharmacy not found.");
 
             _mapper.Map(model, pharmacy);
             await _pharmacyRepository.UpdateAsync(pharmacy);
-            return _mapper.Map<PharmacyResponseDTO>(pharmacy);
+            return _mapper.Map<UpdatePharmacyResponseDTO>(pharmacy);
         }
 
         public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)

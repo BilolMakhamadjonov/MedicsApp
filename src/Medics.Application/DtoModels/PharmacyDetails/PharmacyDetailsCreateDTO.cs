@@ -8,3 +8,5 @@ public class PharmacyDetailsCreateDTO
     public double TotalPrice { get; set; }
     public Guid CartId { get; set; }
 }
+
+public class CreatePharmacyDetailsResponseDTO : BaseResponseDTO { }

@@ -23,14 +23,14 @@ public class PersonalCabinetService : IPersonalCabinetService
         return _mapper.Map<List<PersonalCabinetResponseDTO>>(entities);
     }
 
-    public async Task<PersonalCabinetResponseDTO> CreateAsync(PersonalCabinetCreateDTO createDto, CancellationToken cancellationToken = default)
+    public async Task<CreatePersonalCabinetResponseDTO> CreateAsync(PersonalCabinetCreateDTO createDto, CancellationToken cancellationToken = default)
     {
         var entity = _mapper.Map<PersonalCabinet>(createDto);
         await _repository.AddAsync(entity);
-        return new PersonalCabinetResponseDTO { Id = entity.Id };
+        return new CreatePersonalCabinetResponseDTO { Id = entity.Id };
     }
 
-    public async Task<PersonalCabinetResponseDTO> UpdateAsync(Guid id, PersonalCabinetUpdateDTO updateDto, CancellationToken cancellationToken = default)
+    public async Task<UpdatePersonalCabinetResponseDTO> UpdateAsync(Guid id, PersonalCabinetUpdateDTO updateDto, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
         if (entity == null) throw new Exception("Personal Cabinet not found.");
@@ -38,7 +38,7 @@ public class PersonalCabinetService : IPersonalCabinetService
         _mapper.Map(updateDto, entity);
         await _repository.UpdateAsync(entity);
 
-        return new PersonalCabinetResponseDTO { Id = entity.Id };
+        return new UpdatePersonalCabinetResponseDTO { Id = entity.Id };
     }
 
     public async Task<BaseResponseDTO> DeleteAsync(Guid id, CancellationToken cancellationToken = default)

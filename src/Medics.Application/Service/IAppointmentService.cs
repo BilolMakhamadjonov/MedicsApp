@@ -6,7 +6,7 @@ public interface IAppointmentService
 {
     Task<List<AppointmentResponseDTO>> GetAllAppointmentsAsync();
     Task<AppointmentResponseDTO> GetAppointmentByIdAsync(Guid id);
-    Task<AppointmentResponseDTO> CreateAppointmentAsync(AppointmentCreateDTO dto);
-    Task<AppointmentResponseDTO> UpdateAppointmentAsync(Guid id, AppointmentUpdateDTO dto);
+    Task<CreateAppointmentResponseDTO> CreateAppointmentAsync(AppointmentCreateDTO dto);
+    Task<UpdateAppointmentResponseDTO> UpdateAppointmentAsync(Guid id, AppointmentUpdateDTO dto);
     Task<bool> DeleteAppointmentAsync(Guid id);
 }

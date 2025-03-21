@@ -23,21 +23,21 @@ public class GeolocationService : IGeolocationService
         return _mapper.Map<List<GeolocationResponseDTO>>(result);
     }
 
-    public async Task<GeolocationResponseDTO> CreateAsync(GeolocationCreateDTO createModel, CancellationToken cancellationToken = default)
+    public async Task<CreateGeolocationResponseDTO> CreateAsync(GeolocationCreateDTO createModel, CancellationToken cancellationToken = default)
     {
         var entity = _mapper.Map<Geolocation>(createModel);
         var created = await _repository.AddAsync(entity);
-        return new GeolocationResponseDTO { Id = created.Id };
+        return new CreateGeolocationResponseDTO { Id = created.Id };
     }
 
-    public async Task<GeolocationResponseDTO> UpdateAsync(Guid id, GeolocationUpdateDTO updateModel, CancellationToken cancellationToken = default)
+    public async Task<UpdateGeolocationResponseDTO> UpdateAsync(Guid id, GeolocationUpdateDTO updateModel, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
         if (entity == null) throw new Exception("Geolocation not found.");
 
         _mapper.Map(updateModel, entity);
         var updated = await _repository.UpdateAsync(entity);
-        return new GeolocationResponseDTO { Id = updated.Id };
+        return new UpdateGeolocationResponseDTO { Id = updated.Id };
     }
 
     public async Task<BaseResponseDTO> DeleteAsync(Guid id, CancellationToken cancellationToken = default)

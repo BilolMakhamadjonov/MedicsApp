@@ -23,21 +23,21 @@ public class DoctorDetailsService : IDoctorDetailsService
         return _mapper.Map<List<DoctorDetailsResponseDTO>>(result);
     }
 
-    public async Task<DoctorDetailsResponseDTO> CreateAsync(DoctorDetailsCreateDTO createModel, CancellationToken cancellationToken = default)
+    public async Task<CreateDoctorDetailsResponseDTO> CreateAsync(DoctorDetailsCreateDTO createModel, CancellationToken cancellationToken = default)
     {
         var entity = _mapper.Map<DoctorDetails>(createModel);
         var created = await _repository.AddAsync(entity);
-        return new DoctorDetailsResponseDTO { Id = created.Id };
+        return new CreateDoctorDetailsResponseDTO { Id = created.Id };
     }
 
-    public async Task<DoctorDetailsResponseDTO> UpdateAsync(Guid id, DoctorDetailsUpdateDTO updateModel, CancellationToken cancellationToken = default)
+    public async Task<UpdateDoctorDetailsResponseDTO> UpdateAsync(Guid id, DoctorDetailsUpdateDTO updateModel, CancellationToken cancellationToken = default)
     {
         var entity = await _repository.GetByIdAsync(id);
         if (entity == null) throw new Exception("Doctor details not found.");
 
         _mapper.Map(updateModel, entity);
         var updated = await _repository.UpdateAsync(entity);
-        return new DoctorDetailsResponseDTO { Id = updated.Id };
+        return new UpdateDoctorDetailsResponseDTO { Id = updated.Id };
     }
 
     public async Task<BaseResponseDTO> DeleteAsync(Guid id, CancellationToken cancellationToken = default)

@@ -5,3 +5,5 @@ public class AmbulanceUpdateDTO
     public Guid? ClientLocationId { get; set; }
     public Guid? AmbulanceLocationId { get; set; }
 }
+
+public class UpdateAmbulanceResponseDTO : BaseResponseDTO { }

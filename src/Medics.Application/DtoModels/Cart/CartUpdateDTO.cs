@@ -4,3 +4,5 @@ public class CartUpdateDTO
 {
     public decimal? Total { get; set; }
 }
+
+public class UpdateCartResponseDTO : BaseResponseDTO { }

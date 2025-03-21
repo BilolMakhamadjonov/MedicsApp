@@ -7,3 +7,6 @@ public class ChatCreateDTO
     public string Message { get; set; }
     public Guid VideoCallId { get; set; }
 }
+
+public class CreateChatResponseDTO : BaseResponseDTO { }
+

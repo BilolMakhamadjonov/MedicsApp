@@ -9,3 +9,5 @@ public class UserCreateDTO
     public UserRole Role { get; set; } = UserRole.Patient;
     public UserGender Gender { get; set; }
 }
+
+public class CreateUserResponseDTO : BaseResponseDTO { }

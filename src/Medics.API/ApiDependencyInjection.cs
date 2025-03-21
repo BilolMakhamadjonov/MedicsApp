@@ -1,6 +1,6 @@
 ﻿using Medics.DataAccess.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -13,6 +13,22 @@ public static class ApiDependencyInjection
         var jwtSettings = configuration.GetSection("Jwt");
         var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
+        // Identity xizmatlarini qo‘shish (faqat user va role management uchun)
+        services.AddIdentityCore<IdentityUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 8;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = true;
+            options.Password.RequireLowercase = false;
+        });
+
+        // Faqat JWT bilan ishlash uchun Authentication sozlamalari
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -31,11 +47,9 @@ public static class ApiDependencyInjection
             });
 
         services.AddAuthorization();
-
-
         services.AddHttpContextAccessor();
-
 
         return services;
     }
 }
+

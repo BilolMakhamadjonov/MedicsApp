@@ -9,3 +9,5 @@ public class PharmacyPaymentUpdateDTO
     public decimal? Taxes { get; set; }
     public decimal? TotalPrice { get; set; }
 }
+
+public class UpdatePharmacyPaymentResponseDTO : BaseResponseDTO { }

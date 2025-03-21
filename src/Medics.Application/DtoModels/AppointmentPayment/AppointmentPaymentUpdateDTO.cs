@@ -8,3 +8,5 @@ public class AppointmentPaymentUpdateDTO
     public decimal? ConsultationPrice { get; set; }
     public decimal? AdminFee { get; set; }
 }
+
+public class UpdateAppointmentPaymentResponseDTO : BaseResponseDTO { }

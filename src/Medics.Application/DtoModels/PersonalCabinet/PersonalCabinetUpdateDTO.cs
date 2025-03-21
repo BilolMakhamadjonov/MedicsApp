@@ -8,3 +8,5 @@ public class PersonalCabinetUpdateDTO
     public long? MySaved { get; set; }
     public PaymentMethod? PaymentMethod { get; set; }
 }
+
+public class UpdatePersonalCabinetResponseDTO : BaseResponseDTO { }
