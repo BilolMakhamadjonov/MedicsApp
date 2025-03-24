@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Medics.Application.Service.Impl
 {
-    internal class AppoinmentService
+    public class AppoinmentService
     {
+        //Bron
     }
 }
