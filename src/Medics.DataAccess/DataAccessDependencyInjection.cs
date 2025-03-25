@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Medics.Shared.Services;
 using Medics.Shared.Services.Impl;
-using Medics.DataAccess.Auth;
 
 namespace Medics.DataAccess;
 
@@ -19,6 +18,8 @@ public static class DataAccessDependencyInjection
         services.AddIdentity();
         services.AddRepositories();
         services.AddDatabaseServices(configuration);
+
+        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
         return services;
     }
 
@@ -40,8 +41,8 @@ public static class DataAccessDependencyInjection
         services.AddScoped<IPharmacyPaymentRepository, PharmacyPaymentRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IClaimService, ClaimService>();
-        services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+        services.AddScoped<IEmailService, EmailService>();
     }
 
     public static IServiceCollection AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)

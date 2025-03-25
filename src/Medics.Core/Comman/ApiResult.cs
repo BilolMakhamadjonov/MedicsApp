@@ -1,5 +1,6 @@
 ﻿namespace Medics.Core.Comman;
 
+// ApiResult class representing success or failure.
 public class ApiResult
 {
     protected internal ApiResult(bool isSuccess, string? successMessage, Error? error)
@@ -78,11 +79,6 @@ public class ApiResult<TValue> : ApiResult
     public static ApiResult<TValue> Create(TValue? value)
         => value != null ? Success(value) : Failure(Error.NullValue);
 
-    public static object? Success(bool v)
-    {
-        throw new NotImplementedException();
-    }
-
     // Implicit conversion operator to allow direct conversion from TValue to ApiResult<TValue>
     public static implicit operator ApiResult<TValue>(TValue? value) => Create(value);
 
@@ -100,5 +96,89 @@ public class ApiResult<TValue> : ApiResult
     }
 }
 
+//using System.Text.Json.Serialization;
 
+//namespace Medics.Core.Comman
+//{
+//    // Asosiy ApiResult sinfi
+//    public class ApiResult
+//    {
+//        protected ApiResult(bool isSuccess, string? successMessage, Error? error)
+//        {
+//            if (isSuccess && error != Error.None)
+//                throw new InvalidOperationException("Muvaffaqiyatli natijada xatolik bo‘lishi mumkin emas.");
 
+//            if (!isSuccess && error == Error.None)
+//                throw new InvalidOperationException("Muvaffaqiyatsiz natija uchun xatolik talab qilinadi.");
+
+//            IsSuccess = isSuccess;
+//            SuccessMessage = successMessage;
+//            Error = error ?? Error.None;
+//        }
+
+//        public bool IsSuccess { get; }
+//        public string? SuccessMessage { get; }
+//        public bool IsFailure => !IsSuccess;
+//        public Error? Error { get; }
+
+//        public static ApiResult Success(string? successMessage = null) => new ApiResult(true, successMessage, null);
+//        public static ApiResult Failure(Error error, string? failureMessage = null) => new ApiResult(false, failureMessage, error);
+//    }
+
+//    // Generik ApiResult<T> sinfi
+//    public class ApiResult<T> : ApiResult
+//    {
+//        private readonly T? _value;
+
+//        private ApiResult(T? value, string? successMessage, bool isSuccess, Error? error)
+//            : base(isSuccess, successMessage, error)
+//        {
+//            _value = value;
+//        }
+
+//        // ✅ Value faqat muvaffaqiyatli natija bo‘lsa olish mumkin
+//        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+//        public T Value => IsSuccess
+//            ? _value ?? throw new InvalidOperationException("Muvaffaqiyatli natija lekin qiymat yo‘q.")
+//            : throw new InvalidOperationException("Muvaffaqiyatsiz natijaning qiymati mavjud emas.");
+
+//        // ✅ Xavfsiz qiymat olish usuli
+//        public bool TryGetValue(out T value)
+//        {
+//            if (IsSuccess)
+//            {
+//                value = _value!;
+//                return true;
+//            }
+
+//            value = default!;
+//            return false;
+//        }
+
+//        // ✅ Muvaffaqiyatli natija yaratish
+//        public static ApiResult<T> Success(T value, string? successMessage = null)
+//            => new ApiResult<T>(value, successMessage, true, Error.None);
+
+//        // ✅ Muvaffaqiyatsiz natija yaratish
+//        public static ApiResult<T> Failure(Error error, string? failureMessage = null)
+//            => new ApiResult<T>(default, failureMessage, false, error);
+
+//        // ✅ Nullable qiymatdan ApiResult yaratish
+//        public static ApiResult<T> Create(T? value)
+//            => value != null ? Success(value) : Failure(Error.NullValue);
+
+//        // ✅ Implicit conversion operator
+//        public static implicit operator ApiResult<T>(T? value) => Create(value);
+
+//        // ✅ ToString() metodi natijani soddaroq chiqarish uchun
+//        public override string ToString()
+//        {
+//            return IsSuccess
+//                ? $"Success: {SuccessMessage}, Value: {_value}"
+//                : $"Failure: {Error?.Message}";
+//        }
+//    }
+
+//    // ❗ Xatolarni ifodalovchi Error sinfi
+
+//}

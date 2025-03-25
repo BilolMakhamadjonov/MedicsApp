@@ -11,9 +11,8 @@ public class UserMapping : Profile
     {
         CreateMap<UserCreateDTO, User>();
         CreateMap<UserUpdateDTO, User>().ReverseMap();
-        CreateMap<UserLoginModel, User>();
-        CreateMap<UserRegisterModel, User>();
-        CreateMap<User, UserResponseDTO>();
+        CreateMap<LoginDTO, User>();
+        CreateMap<RegisterDTO, User>();
         ///
     }
 }

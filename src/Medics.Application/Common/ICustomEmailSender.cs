@@ -1,4 +1,4 @@
-﻿namespace Medics.Application.OTP_Service;
+﻿namespace Medics.Application.Common;
 
 public interface ICustomEmailSender
 {

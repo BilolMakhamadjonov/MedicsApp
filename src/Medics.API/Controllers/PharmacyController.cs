@@ -28,7 +28,7 @@ public class PharmacyController : ApiController
     {
         var result = await _pharmacyService.CreateAsync(createModel);
 
-        if (result == null) return BadRequest(ApiResult<CreatePharmacyResponseDTO>.Failure());
+        if (result == null) return BadRequest(ApiResult<CreatePharmacyResponseDTO>.Failure(Error.NullValue));
 
         return Ok(ApiResult<CreatePharmacyResponseDTO>.Success(result));
     }
@@ -43,6 +43,11 @@ public class PharmacyController : ApiController
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        return Ok(ApiResult<BaseResponseDTO>.Success(await _pharmacyService.DeleteAsync(id)));
+        bool isDeleted = await _pharmacyService.DeleteAsync(id);
+
+        if (!isDeleted)
+            return BadRequest(ApiResult<BaseResponseDTO>.Failure(new Error("DeleteFailed", "O‘chirish muvaffaqiyatsiz bo‘ldi")));
+
+        return Ok(ApiResult<BaseResponseDTO>.Success(new BaseResponseDTO { Message = "O‘chirish muvaffaqiyatli amalga oshirildi!" }));
     }
 }

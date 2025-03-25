@@ -1,10 +1,16 @@
-﻿using Medics.Application.AutoMapping;
-using Medics.Application.OTP_Service;
+﻿using Medics.Application.AuthenticationService;
+using Medics.Application.AutoMapping;
+using Medics.Application.Common;
 using Medics.Application.Service;
 using Medics.Application.Service.Impl;
+using Medics.Application.Service.OTP_Service;
+using Medics.Core.Entities;
+using Medics.DataAccess.Data;
 using Medics.Shared.Services;
 using Medics.Shared.Services.Impl;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Medics.Application;
@@ -25,8 +31,6 @@ public static class ApplicationDependencyInjection
     private static void AddServices(this IServiceCollection services, IWebHostEnvironment env)
     {
         services.AddScoped<IClaimService, ClaimService>();
-        services.AddScoped<IOtpService, OtpService>();
-        services.AddScoped<ICustomEmailSender, EmailSender>();
         services.AddScoped<IAmbulanceService, AmbulanceService>();
         services.AddScoped<IAppointmentPaymentService, AppointmentPaymentService>();
         services.AddScoped<IAppointmentService, AppointmentService>();
@@ -39,6 +43,33 @@ public static class ApplicationDependencyInjection
         services.AddScoped<IPharmacyDetailsService, PharmacyDetailsService>();
         services.AddScoped<IPharmacyPaymentService, PharmacyPaymentService>();
         services.AddScoped<IPharmacyService, PharmacyService>();
+
+        services.AddScoped<ICustomEmailSender, EmailSender>();
+        services.AddScoped<IOtpService, OtpService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddIdentityServices();
+        services.AddScoped<RoleManager<ApplicationRole>>();
+    }
+
+    private static IServiceCollection AddIdentityServices(this IServiceCollection services)
+    {
+        services.AddIdentity<User, IdentityRole<Guid>>(options =>
+        {
+            options.Password.RequireDigit = true;
+            options.Password.RequiredLength = 6;
+            options.Password.RequireUppercase = true;
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
+
+        services.AddScoped<IRoleStore<ApplicationRole>, RoleStore<ApplicationRole, AppDbContext, Guid>>();
+
+        services.AddScoped<UserManager<User>>();
+        services.AddScoped<RoleManager<ApplicationRole>>();
+        services.AddScoped<SignInManager<User>>();
+
+        return services;
     }
 
     private static void RegisterAutoMapper(this IServiceCollection services)

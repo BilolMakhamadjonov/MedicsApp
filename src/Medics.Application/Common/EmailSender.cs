@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using System.Net;
 
-namespace Medics.Application.OTP_Service;
+namespace Medics.Application.Common;
 
 public class EmailSender : ICustomEmailSender
 {
